@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemistry Flashcards</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div id="sidebar" class="sidebar">
+            <button id="skip" class="sidebar-btn">Skip</button>
+            <button id="masterlist" class="sidebar-btn">Master List</button>
+        </div>
+
+        <div class="flashcard-container">
+            <button id="flip-button" class="nav-btn">Flip</button>
+            <div class="flashcard" id="flashcard">
+                <div class="flashcard-inner">
+                    <div class="front">
+                        <h1 id="element-name">Hydrogen</h1>
+                    </div>
+                    <div class="back">
+                        <p id="element-symbol">H</p>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button id="previous" class="nav-btn">Previous</button>
+                <button id="next" class="nav-btn">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="masterlist-modal" class="modal">
+        <div class="modal-content">
+            <span id="close-modal" class="close">&times;</span>
+            <h2>Elements and Symbols</h2>
+            <ul id="element-list"></ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
