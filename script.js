@@ -54,22 +54,26 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     let currentIndex = 0;
+    let isFlipped = false;
 
     function displayFlashcard(index) {
         elementName.textContent = elements[index].name;
         elementSymbol.textContent = elements[index].symbol;
         flashcard.classList.remove('flip'); // Ensure the card is flipped to the name side
+        isFlipped = false;
     }
 
     displayFlashcard(currentIndex);
 
     flipButton.addEventListener('click', () => {
         flashcard.classList.toggle('flip');
+        isFlipped = !isFlipped;
     });
 
     nextButton.addEventListener('click', () => {
-        if (flashcard.classList.contains('flip')) {
+        if (isFlipped) {
             flashcard.classList.remove('flip'); // Flip back to name side
+            isFlipped = false;
             setTimeout(() => {
                 currentIndex = (currentIndex + 1) % elements.length;
                 displayFlashcard(currentIndex);
@@ -81,8 +85,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     previousButton.addEventListener('click', () => {
-        if (flashcard.classList.contains('flip')) {
+        if (isFlipped) {
             flashcard.classList.remove('flip'); // Flip back to name side
+            isFlipped = false;
             setTimeout(() => {
                 currentIndex = (currentIndex - 1 + elements.length) % elements.length;
                 displayFlashcard(currentIndex);
