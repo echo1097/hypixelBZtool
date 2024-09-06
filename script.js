@@ -63,6 +63,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     displayFlashcard(currentIndex);
 
+    flipButton.addEventListener('click', () => {
+        flashcard.classList.toggle('flip');
+    });
+
     nextButton.addEventListener('click', () => {
         if (flashcard.classList.contains('flip')) {
             flashcard.classList.remove('flip'); // Flip back to name side
