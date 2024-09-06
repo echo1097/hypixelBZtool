@@ -1,10 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     const flipButton = document.getElementById('flip-button');
     const flashcard = document.getElementById('flashcard');
-
-    flipButton.addEventListener('click', () => {
-        flashcard.classList.toggle('flip');
-    });
+    const elementName = document.getElementById('element-name');
+    const elementSymbol = document.getElementById('element-symbol');
+    const masterlistButton = document.getElementById('masterlist');
+    const modal = document.getElementById('masterlist-modal');
+    const closeModal = document.getElementById('close-modal');
+    const elementList = document.getElementById('element-list');
+    const previousButton = document.getElementById('previous');
+    const nextButton = document.getElementById('next');
 
     const elements = [
         { name: "Aluminum", symbol: "Al" },
@@ -51,36 +55,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentIndex = 0;
 
-    const elementName = document.getElementById('element-name');
-    const elementSymbol = document.getElementById('element-symbol');
-    const masterlistButton = document.getElementById('masterlist');
-    const modal = document.getElementById('masterlist-modal');
-    const closeModal = document.getElementById('close-modal');
-    const elementList = document.getElementById('element-list');
-    const previousButton = document.getElementById('previous');
-    const nextButton = document.getElementById('next');
-    const skipButton = document.getElementById('skip');
-
     function displayFlashcard(index) {
         elementName.textContent = elements[index].name;
         elementSymbol.textContent = elements[index].symbol;
+        flashcard.classList.remove('flip'); // Ensure the card is flipped to the name side
     }
 
     displayFlashcard(currentIndex);
 
     nextButton.addEventListener('click', () => {
-        currentIndex = (currentIndex + 1) % elements.length;
-        displayFlashcard(currentIndex);
+        if (flashcard.classList.contains('flip')) {
+            flashcard.classList.remove('flip'); // Flip back to name side
+            setTimeout(() => {
+                currentIndex = (currentIndex + 1) % elements.length;
+                displayFlashcard(currentIndex);
+            }, 600); // Wait for flip transition to complete
+        } else {
+            currentIndex = (currentIndex + 1) % elements.length;
+            displayFlashcard(currentIndex);
+        }
     });
 
     previousButton.addEventListener('click', () => {
-        currentIndex = (currentIndex - 1 + elements.length) % elements.length;
-        displayFlashcard(currentIndex);
-    });
-
-    skipButton.addEventListener('click', () => {
-        currentIndex = Math.floor(Math.random() * elements.length);
-        displayFlashcard(currentIndex);
+        if (flashcard.classList.contains('flip')) {
+            flashcard.classList.remove('flip'); // Flip back to name side
+            setTimeout(() => {
+                currentIndex = (currentIndex - 1 + elements.length) % elements.length;
+                displayFlashcard(currentIndex);
+            }, 600); // Wait for flip transition to complete
+        } else {
+            currentIndex = (currentIndex - 1 + elements.length) % elements.length;
+            displayFlashcard(currentIndex);
+        }
     });
 
     masterlistButton.addEventListener('click', () => {
