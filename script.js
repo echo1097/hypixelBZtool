@@ -1,124 +1,143 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const flipButton = document.getElementById('flip-button');
-    const flashcard = document.getElementById('flashcard');
-    const elementName = document.getElementById('element-name');
-    const elementSymbol = document.getElementById('element-symbol');
-    const masterlistButton = document.getElementById('masterlist');
-    const modal = document.getElementById('masterlist-modal');
-    const closeModal = document.getElementById('close-modal');
-    const elementList = document.getElementById('element-list');
-    const previousButton = document.getElementById('previous');
-    const nextButton = document.getElementById('next');
+// Configuration
+const API_KEY = 'e8779308-425a-4dff-964f-fea955434c4c'; // Replace with your Hypixel API key
+const API_BASE_URL = 'https://api.hypixel.net/skyblock/bazaar';
+const REFRESH_INTERVAL = 30; // Seconds between refreshes
 
-    const elements = [
-        { name: "Aluminum", symbol: "Al" },
-        { name: "Lithium", symbol: "Li" },
-        { name: "Magnesium", symbol: "Mg" },
-        { name: "Argon", symbol: "Ar" },
-        { name: "Mercury", symbol: "Hg" },
-        { name: "Bismuth", symbol: "Bi" },
-        { name: "Barium", symbol: "Ba" },
-        { name: "Neon", symbol: "Ne" },
-        { name: "Beryllium", symbol: "Be" },
-        { name: "Nickel", symbol: "Ni" },
-        { name: "Boron", symbol: "B" },
-        { name: "Nitrogen", symbol: "N" },
-        { name: "Bromine", symbol: "Br" },
-        { name: "Oxygen", symbol: "O" },
-        { name: "Calcium", symbol: "Ca" },
-        { name: "Phosphorus", symbol: "P" },
-        { name: "Carbon", symbol: "C" },
-        { name: "Platinum", symbol: "Pt" },
-        { name: "Potassium", symbol: "K" },
-        { name: "Chlorine", symbol: "Cl" },
-        { name: "Radium", symbol: "Ra" },
-        { name: "Chromium", symbol: "Cr" },
-        { name: "Radon", symbol: "Rn" },
-        { name: "Cobalt", symbol: "Co" },
-        { name: "Copper", symbol: "Cu" },
-        { name: "Fluorine", symbol: "F" },
-        { name: "Silicon", symbol: "Si" },
-        { name: "Gallium", symbol: "Ga" },
-        { name: "Silver", symbol: "Ag" },
-        { name: "Sodium", symbol: "Na" },
-        { name: "Gold", symbol: "Au" },
-        { name: "Helium", symbol: "He" },
-        { name: "Sulfur", symbol: "S" },
-        { name: "Hydrogen", symbol: "H" },
-        { name: "Tin", symbol: "Sn" },
-        { name: "Iodine", symbol: "I" },
-        { name: "Iron", symbol: "Fe" },
-        { name: "Uranium", symbol: "U" },
-        { name: "Lead", symbol: "Pb" },
-        { name: "Zinc", symbol: "Zn" }
-    ];
+// DOM Elements
+const searchInput = document.getElementById('searchInput');
+const itemsGrid = document.getElementById('itemsGrid');
+const timerElement = document.getElementById('timer');
 
-    let currentIndex = 0;
-    let isFlipped = false;
+// Timer variables
+let timeUntilRefresh = REFRESH_INTERVAL;
+let timerInterval;
 
-    function displayFlashcard(index) {
-        elementName.textContent = elements[index].name;
-        elementSymbol.textContent = elements[index].symbol;
-        flashcard.classList.remove('flip'); // Ensure the card is flipped to the name side
-        isFlipped = false;
+// Fetch bazaar data
+async function fetchBazaarData() {
+    try {
+        const response = await fetch(`${API_BASE_URL}?key=${API_KEY}`);
+        const data = await response.json();
+
+        if (data.success) {
+            return data.products;
+        } else {
+            throw new Error('Failed to fetch bazaar data');
+        }
+    } catch (error) {
+        console.error('Error fetching bazaar data:', error);
+        return null;
+    }
+}
+
+// Create item card
+function createItemCard(itemData) {
+    const card = document.createElement('div');
+    card.className = 'item-card';
+
+    const buyPrice = Math.round(itemData.quick_status.buyPrice * 100) / 100;
+    const sellPrice = Math.round(itemData.quick_status.sellPrice * 100) / 100;
+    const formattedName = formatItemName(itemData.product_id);
+
+    card.innerHTML = `
+        <div class="item-name">${formattedName}</div>
+        <div class="item-price">Buy: ${buyPrice.toLocaleString()} coins</div>
+        <div class="item-price">Sell: ${sellPrice.toLocaleString()} coins</div>
+        <div class="item-demand">Demand: ${itemData.quick_status.buyVolume.toLocaleString()}</div>
+    `;
+
+    return card;
+}
+
+// Format item name
+function formatItemName(productId) {
+    return productId
+        .split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
+}
+
+// Filter items based on search
+function filterItems(items, searchTerm) {
+    const term = searchTerm.toLowerCase();
+    return Object.entries(items).filter(([productId]) => 
+        formatItemName(productId).toLowerCase().includes(term)
+    );
+}
+
+// Update items display
+async function updateDisplay(searchTerm = '') {
+    if (!itemsGrid) return;
+
+    itemsGrid.innerHTML = '<div class="loading">Loading bazaar data...</div>';
+
+    const items = await fetchBazaarData();
+
+    if (!items) {
+        itemsGrid.innerHTML = '<div class="error-message">Error loading bazaar data. Please try again later.</div>';
+        return;
     }
 
-    displayFlashcard(currentIndex);
+    const filteredItems = filterItems(items, searchTerm);
+    itemsGrid.innerHTML = '';
 
-    flipButton.addEventListener('click', () => {
-        flashcard.classList.toggle('flip');
-        isFlipped = !isFlipped;
-    });
-
-    nextButton.addEventListener('click', () => {
-        if (isFlipped) {
-            flashcard.classList.remove('flip'); // Flip back to name side
-            isFlipped = false;
-            setTimeout(() => {
-                currentIndex = (currentIndex + 1) % elements.length;
-                displayFlashcard(currentIndex);
-            }, 600); // Wait for flip transition to complete
-        } else {
-            currentIndex = (currentIndex + 1) % elements.length;
-            displayFlashcard(currentIndex);
-        }
-    });
-
-    previousButton.addEventListener('click', () => {
-        if (isFlipped) {
-            flashcard.classList.remove('flip'); // Flip back to name side
-            isFlipped = false;
-            setTimeout(() => {
-                currentIndex = (currentIndex - 1 + elements.length) % elements.length;
-                displayFlashcard(currentIndex);
-            }, 600); // Wait for flip transition to complete
-        } else {
-            currentIndex = (currentIndex - 1 + elements.length) % elements.length;
-            displayFlashcard(currentIndex);
-        }
-    });
-
-    masterlistButton.addEventListener('click', () => {
-        modal.style.display = 'flex';
-        populateMasterlist();
-    });
-
-    closeModal.addEventListener('click', () => {
-        modal.style.display = 'none';
-    });
-
-    function populateMasterlist() {
-        elementList.innerHTML = '';
-        elements.forEach(el => {
-            const li = document.createElement('li');
-            li.textContent = `${el.name}: ${el.symbol}`;
-            elementList.appendChild(li);
-        });
+    if (filteredItems.length === 0) {
+        itemsGrid.innerHTML = '<div class="error-message">No items found matching your search.</div>';
+        return;
     }
 
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
+    filteredItems.forEach(([_, itemData]) => {
+        const card = createItemCard(itemData);
+        itemsGrid.appendChild(card);
+    });
+}
+
+// Timer function
+function startTimer() {
+    if (timerInterval) {
+        clearInterval(timerInterval);
+    }
+
+    timeUntilRefresh = REFRESH_INTERVAL;
+    updateTimerDisplay();
+
+    timerInterval = setInterval(() => {
+        timeUntilRefresh--;
+        updateTimerDisplay();
+
+        if (timeUntilRefresh <= 0) {
+            timeUntilRefresh = REFRESH_INTERVAL;
+            updateDisplay(searchInput ? searchInput.value : '');
         }
-    };
+    }, 1000);
+}
+
+// Update timer display
+function updateTimerDisplay() {
+    if (timerElement) {
+        timerElement.textContent = timeUntilRefresh;
+    }
+}
+
+// Event listeners
+if (searchInput) {
+    let searchTimeout;
+    searchInput.addEventListener('input', (e) => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            updateDisplay(e.target.value);
+        }, 300);
+    });
+}
+
+// Initialize
+if (window.location.pathname.includes('bazaar.html')) {
+    updateDisplay();
+    startTimer();
+}
+
+// Cleanup
+window.addEventListener('beforeunload', () => {
+    if (timerInterval) {
+        clearInterval(timerInterval);
+    }
 });
