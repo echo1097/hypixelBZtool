@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minion Calc - Hypixel Skyblock</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-title">
+            <h1>Hypixel Skyblock Tools</h1>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="bazaar.html">Bazaar Prices</a>
+            <a href="minions.html" class="active">Minion Calculator</a>
+            <a href="flips.html">Flips</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="calculator-section">
+            <h2>Minion Profit Calculator</h2>
+
+            <div class="config-panel">
+                <div class="config-group">
+                    <label for="minion-type">Minion Type</label>
+                    <select id="minion-type">
+                        <option value="SNOW">Snow Minion</option>
+                        <option value="SLIME">Slime Minion</option>
+                    </select>
+                </div>
+
+                <div class="config-group">
+                    <label for="minion-tier">Tier</label>
+                    <select id="minion-tier"></select>
+                </div>
+
+                <div class="config-group">
+                    <label for="duration">Time Period</label>
+                    <div class="duration-input">
+                        <input type="number" id="duration-value" min="1" value="1">
+                        <select id="duration-unit">
+                            <option value="hours">Hours</option>
+                            <option value="days">Days</option>
+                            <option value="weeks" selected>Weeks</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="upgrades-section">
+                    <h3>Upgrades & Fuel</h3>
+
+                    <div class="upgrade-group">
+                        <label for="fuel">Fuel</label>
+                        <select id="fuel">
+                            <option value="none">None</option>
+                            <option value="coal">Coal</option>
+                            <option value="enchanted_coal">Enchanted Coal</option>
+                            <option value="enchanted_lava_bucket">Enchanted Lava Bucket</option>
+                            <option value="plasma_bucket">Plasma Bucket</option>
+                        </select>
+                    </div>
+
+                    <div class="upgrade-group">
+                        <label for="storage">Storage</label>
+                        <select id="storage">
+                            <option value="none">None</option>
+                            <option value="small_storage">Small Storage</option>
+                            <option value="medium_storage">Medium Storage</option>
+                            <option value="large_storage">Large Storage</option>
+                            <option value="budget_hopper">Budget Hopper</option>
+                            <option value="enchanted_hopper">Enchanted Hopper</option>
+                        </select>
+                    </div>
+
+                    <div class="upgrade-group">
+                        <label for="automation">Automation</label>
+                        <select id="automation">
+                            <option value="none">None</option>
+                            <option value="auto_smelter">Auto Smelter</option>
+                            <option value="compactor">Compactor</option>
+                            <option value="super_compactor">Super Compactor 3000</option>
+                            <option value="catalyst">Catalyst</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="calculate" class="calculate-btn">Calculate Profit</button>
+            </div>
+
+            <div id="results" class="results-panel hidden">
+                <div class="results-header">
+                    <h3>Profit Calculation</h3>
+                </div>
+
+                <div class="profit-grid">
+                    <div class="profit-card">
+                        <h4>Hourly Profit</h4>
+                        <p id="hourly-profit">0 coins</p>
+                    </div>
+                    <div class="profit-card">
+                        <h4>Daily Profit</h4>
+                        <p id="daily-profit">0 coins</p>
+                    </div>
+                    <div class="profit-card">
+                        <h4>Total Profit</h4>
+                        <p id="total-profit">0 coins</p>
+                    </div>
+                </div>
+
+                <div class="details-section">
+                    <h4>Detailed Breakdown</h4>
+                    <div class="detail-row">
+                        <span>Items Produced:</span>
+                        <span id="items-produced">0</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>Raw Income:</span>
+                        <span id="raw-income">0 coins</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>Upgrade Costs:</span>
+                        <span id="upgrade-costs">0 coins</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>Fuel Costs:</span>
+                        <span id="fuel-costs">0 coins</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="minion-data.js"></script>
+    <script src="minion-calc.js"></script>
+</body>
+</html>

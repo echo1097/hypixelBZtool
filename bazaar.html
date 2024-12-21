@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bazaar - Hypixel Skyblock</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-title">
+            <h1>Hypixel Skyblock Tools</h1>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="bazaar.html" class="active">Bazaar Prices</a>
+            <a href="minions.html">Minion Calculator</a>
+            <a href="flips.html">Flips</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="bazaar-container">
+            <div class="refresh-timer">
+                Next refresh in: <span id="timer">30</span>s
+            </div>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search items...">
+            </div>
+            <div id="itemsGrid" class="items-grid"></div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
