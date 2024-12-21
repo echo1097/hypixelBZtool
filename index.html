@@ -3,41 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chemistry Flashcards</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Hypixel SB Tools</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <div id="sidebar" class="sidebar">
-            <button id="masterlist" class="sidebar-btn">Master List</button>
+    <nav class="navbar">
+        <div class="nav-title">
+            <h1>Hypixel Skyblock Tools</h1>
         </div>
+        <div class="nav-links">
+            <a href="index.html" class="active">Home</a>
+            <a href="bazaar.html">Bazaar Prices</a>
+            <a href="minions.html">Minion Calculator</a>
+            <a href="flips.html">Flips</a>
+        </div>
+    </nav>
 
-        <div class="flashcard-container">
-            <button id="flip-button" class="nav-btn">Flip</button>
-            <div class="flashcard" id="flashcard">
-                <div class="flashcard-inner">
-                    <div class="front">
-                        <h1 id="element-name">Hydrogen</h1>
-                    </div>
-                    <div class="back">
-                        <p id="element-symbol">H</p>
-                    </div>
-                </div>
-            </div>
-            <div class="nav-buttons">
-                <button id="previous" class="nav-btn">Previous</button>
-                <button id="next" class="nav-btn">Next</button>
-            </div>
-        </div>
-    </div>
+    <main class="container">
+        <section class="hero">
+            <h2>echo's Hypixel Skyblock Tools</h2>
+            <p>This website neither affiliated or endorsed by Hypixel Studios. I operate and maintain this website as a hobby project.</p>
+        </section>
 
-    <div id="masterlist-modal" class="modal">
-        <div class="modal-content">
-            <span id="close-modal" class="close">&times;</span>
-            <h2>Elements and Symbols</h2>
-            <ul id="element-list"></ul>
-        </div>
-    </div>
+        <section class="features">
+            <div class="feature-card">
+                <h3>Bazaar Prices</h3>
+                <p>Up to date prices on all items in the Bazaar at present given time</p>
+            </div>
+            <div class="feature-card">
+                <h3>Market Analysis</h3>
+                <p>Track demand and price trends</p>
+            </div>
+            <div class="feature-card">
+                <h3>Minion Calculator</h3>
+                <p>Calculate your minion profits and optimize setups</p>
+            </div>
+        </section>
+    </main>
 
     <script src="script.js"></script>
 </body>
